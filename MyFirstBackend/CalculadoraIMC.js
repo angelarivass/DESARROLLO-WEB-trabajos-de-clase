@@ -1,5 +1,4 @@
 //Calculadora automatica de IMC -Indice de masa corporal
-
 //Para poder correrlo utilizando Node.js, se necesita instalar el paquete prompt-sync
 const prompt = require('prompt-sync')();
 
