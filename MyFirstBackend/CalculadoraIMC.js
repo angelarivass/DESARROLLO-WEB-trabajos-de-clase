@@ -14,7 +14,7 @@ altura = parseFloat(altura);
 
 //Validar con la funcion isNaN() que los valores ingresados por el usuario sean numeros y mayores de 0
 if (isNaN(peso) || isNaN(altura) || peso <= 0 || altura <= 0) {
-    console.log('Favor de ingresar valores numericos válidos.');      
+    console.log('Favor de ingresar valores numéricos válidos.');      
     process.exit(1);
 }
 
