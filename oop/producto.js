@@ -1,4 +1,4 @@
-class producto {
+class Producto {
     constructor(id, nombre, precio, stock){
         this.id = id;
         this.nombre = nombre;
@@ -14,7 +14,7 @@ class producto {
 }
 
 //instancias
-const laptop = new Prosucto('p001', 'Laptop Gamer', 2500, 5);
+const laptop = new Producto('p001', 'Laptop Gamer', 2500, 5);
 const mouse = new Producto('p002', 'Mouse Gamer', 450, 15);
 
 console.log(laptop);
