@@ -19,6 +19,29 @@ class Cazador {
     }
 }
 
+class SedeCazadores{
+   constructor(){
+        this.cazadores = [];
+   }
+    enviarAMision(nombreCazador, nombreDemonio){
+
+        try {
+            const cazadorEnviado = this.cazadores.find(cazador => cazador.nombre === nombreCazador);
+            if (!cazadorEnviado){
+                throw new Error("Cazador not found.");
+            }
+            if (cazadorEnviado.rango !== 'Hashira'){
+                throw new Error("¡Misión demasiado peligrosa! Requiere rango Hashira.");
+            }
+            cazadorEnviado.completarMision();
+            console.log(`Mision completada con exito por el cazador ${nombreCazador}.`);
+            
+        } catch (error) {
+            console.error(`Mision incompleta: ${error.message}`);
+        }
+    }
+}
+//ya no supe como implementar la sede en el front
 app.use(express.urlencoded({ extended: true }));
 
 let cazadores = [];
@@ -31,7 +54,7 @@ app.post('/registrar', (req, res) => {
     const datos = req.body;
     const nuevoCazador = new Cazador(datos.nombre, datos.rango, datos.estiloDeRespiracion);
     cazadores.push(nuevoCazador);
-    
+    nuevoCazador.presentarse();
     res.json(cazadores);
 });
 
