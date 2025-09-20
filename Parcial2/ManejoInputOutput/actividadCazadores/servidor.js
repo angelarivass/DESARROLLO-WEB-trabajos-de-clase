@@ -2,16 +2,37 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+class Cazador {
+    constructor(nombre, rango, estiloDeRespiracion, misionesCompletadas = 0) {
+        this.nombre = nombre;
+        this.rango = rango;
+        this.estiloDeRespiracion = estiloDeRespiracion;
+        this.misionesCompletadas = misionesCompletadas;
+    }
+
+    presentarse(){
+        console.log(`Hola, yo soy ${this.nombre}, ${this.estiloDeRespiracion}`)
+    }
+
+    completarMision(){
+        this.misionesCompletadas++;
+    }
+}
+
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
+let cazadores = [];
 
-app.post('/suscribir', (req, res) => {
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/registro.html');
+});
+//
+app.post('/registrar', (req, res) => {
     const datos = req.body;
-    console.log("Datos recibidos por POST:", datos);
-    res.send(`Hola! Tu email "${datos.email}" fue recibido por POST.`);
+    const nuevoCazador = new Cazador(datos.nombre, datos.rango, datos.estiloDeRespiracion);
+    cazadores.push(nuevoCazador);
+    
+    res.json(cazadores);
 });
 
 app.listen(port, () => {
