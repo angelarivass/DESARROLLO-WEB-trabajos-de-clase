@@ -1,0 +1,79 @@
+<html>
+<head>
+    
+</head>
+<body>
+    <h1>Compras en línea</h1>
+    <div id="productos"></div>
+
+    <h2>Mi Carrito</h2>
+    <ul id="carrito"></ul>
+
+    <button id="finalizar">Finalizar Compra</button>
+
+    <script>
+        const productoss = document.getElementById('productos');
+        const carritoLista = document.getElementById('carrito');
+        const btnFinCompra = document.getElementById('finalizar');
+
+        async function cargarProductos() {
+            const res = await fetch('/productos');
+            const data = await res.json();
+            mostrarProductos(data.productos);
+        }
+
+        function mostrarProductos(productos) {
+            productoss.innerHTML = '';
+            productos.forEach(p => {
+                const div = document.createElement('div');
+                div.textContent = p.nombre + ' ';
+
+                const btn = document.createElement('button');
+                btn.textContent = 'Añadir al carrito';
+                btn.onclick = () => agregarAlCarrito(p.id);
+
+                div.appendChild(btn);
+                productoss.appendChild(div);
+            });
+        }
+
+        function agregarAlCarrito(id) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.push(id);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            mostrarCarrito();
+        }
+
+        async function mostrarCarrito() {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const res = await fetch('/productos');
+            const data = await res.json();
+            const productos = data.productos;
+
+            carritoLista.innerHTML = '';
+            carrito.forEach(id => {
+                const producto = productos.find(p => p.id === id);
+                const li = document.createElement('li');
+                li.textContent = producto ? producto.nombre : `Producto ID: ${id}`;
+                carritoLista.appendChild(li);
+            });
+        }
+
+        btnFinCompra.onclick = async () => {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const res = await fetch('/comprar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(carrito)
+            });
+            const data = await res.json();
+            alert(data.mensaje);
+            localStorage.removeItem('carrito');
+            mostrarCarrito();
+        };
+
+        cargarProductos();
+        mostrarCarrito();
+    </script>
+</body>
+</html>
