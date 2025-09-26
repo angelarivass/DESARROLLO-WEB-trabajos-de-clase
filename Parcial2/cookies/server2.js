@@ -11,7 +11,7 @@ const sesiones = {
 app.get('/login', (req, res)=>{
     const idDeSesion = 'abc-123';
     res.cookie('sesionId', idDeSesion, {httpOnly:true});
-    res.send('Has Iniciado sesion! Ahora puedes ira a la pagina principal.');
+    res.send('Has Iniciado sesion! Ahora puedes ir a a la pagina principal.');
 });
 
 app.get('/', (req, res)=>{
