@@ -4,17 +4,21 @@ const crypto = require('crypto');
 const app = express();
 const port = 3000;
 const path = require('path');
+const fs = require('fs');
+
 
 const fs = require('fs');
 app.use(cookieParser());
 
 class ServidorVirtual {
-    constructor(id, nombre, estado){
+    constructor(id, nombre, estado, path){
         this.id = id;
         this.nombre = nombre;
-        this.estado = 'apagado';
+        this.estado = false;
+        this.path = path;
     }
-}
+
+}//encender, apagar, respaldar, guardarlog agregar adminid
 
 app.get('/', (req,res) =>{
     let usuarioID = req.cookies.usuarioID;
