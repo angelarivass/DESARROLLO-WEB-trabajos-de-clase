@@ -1,10 +1,66 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Formulario</title>
-    </head>
-    <body>
-        <form>
-            
-        </form>
-    </body>
+<head>
+    <title>Panel de Control</title>
+</head>
+<body>
+    <h1>Panel de Control</h1>
+    
+    <h2>Crear nuevo servidor</h2>
+    <form id="formCrear">
+        <input type="text" id="nombre" placeholder="Nombre del servidor" required>
+        <button type="submit">Crear</button>
+    </form>
+
+    <h2>Mis servidores</h2>
+    <div id="listaServidores"></div>
+
+    <script>
+        async function cargarServidores() {
+            const res = await fetch('/servidores');
+            const data = await res.json();
+            const cont = document.getElementById('listaServidores');
+            cont.innerHTML = "";
+
+            data.forEach(servidor => {
+                const div = document.createElement('div');
+                div.style.border = "1px solid black";
+                div.style.margin = "5px";
+                div.style.padding = "5px";
+
+                if (localStorage.getItem('ultimoServidor') === servidor.id) {
+                    div.style.backgroundColor = "#d1ffd1"; 
+                }
+
+                div.innerHTML = `
+                    <p><b>${servidor.nombre}</b> (Estado: ${servidor.estado})</p>
+                    <button onclick="accion('${servidor.id}', 'encender')">Encender</button>
+                    <button onclick="accion('${servidor.id}', 'apagar')">Apagar</button>
+                    <button onclick="accion('${servidor.id}', 'backup')">Backup</button>
+                `;
+                cont.appendChild(div);
+            });
+        }
+
+        async function accion(id, tipo) {
+            await fetch(`/servidores/${id}/${tipo}`, { method: 'POST' });
+            localStorage.setItem('ultimoServidor', id);
+            cargarServidores();
+        }
+
+        document.getElementById('formCrear').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            await fetch('/servidores', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre })
+            });
+            document.getElementById('nombre').value = "";
+            cargarServidores();
+        });
+
+        cargarServidores();
+    </script>
+</body>
 </html>

@@ -4,8 +4,8 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) =>{
-    res.render('inicio', { usuario: 'Invitado'});
-});
+    res.render('inicio', { usuario: 'Invitado'});  //entre las llaves podemos poner cualquier info y accederla desde el ejs
+}); //debe ponerse el mismo nombre que tiene el archivo .ejs en la carpeta
 
 const fs = require('fs');
 app.use((req, res, next) => {

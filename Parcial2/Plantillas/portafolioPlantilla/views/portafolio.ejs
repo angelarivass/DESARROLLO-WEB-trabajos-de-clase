@@ -1,0 +1,19 @@
+<html lang="es">
+  <head>
+    <title>Portafolio</title>
+  </head>
+  <body>
+    <h1>Mis Proyectos</h1>
+
+    <ul>
+      <% listaProyectos.forEach(proyecto => { %>
+        <li>
+          <strong>Título:</strong> <%= proyecto.titulo %><br>
+          <strong>Descripción:</strong> <%= proyecto.descripcion %><br>
+          <strong>Tecnología:</strong> <%= proyecto.tecnologia %><br>
+          <strong>Link del proyecto:</strong> <%= proyecto.link %><br><br>
+        </li>
+      <% }) %>
+    </ul>
+  </body>
+</html>
