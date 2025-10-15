@@ -1,11 +1,10 @@
-import { prototype } from 'events';
-
 const express = require('express');
 const fs = require('fs');
 const app = express();
 const port = 3000;
 
 app.use(express.urlencoded({extended: true}));
+app.set('view engine', 'ejs');
 
 const cazadores = [
     {nombre: 'Tanjiro Kamado', respiracion: 'Agua'},
@@ -13,23 +12,7 @@ const cazadores = [
 ];
 
 app.get('/', (req, res) => {
-    let html = '<h1>Sede del Cuerpo de Cazadores de Demonios</h1>';
-    html += `
-        <h2>Registrar nuevo cazador</h2>
-        <form action="/registrar" method="POST">
-            <input name="nombre" placeholder="Nombre" required>
-            <input name="respiracion" placeholder="Estilo de Respiración" required>
-            <button type="submit">Registrar</button>
-        </form>
-    `;
-    
-    html += '<h2>Miembros actuales:</h2><ul>';
-    cazadores.forEach(cazador =>{
-        html += `<li>${cazador.nombre} - Respiración de la ${cazador.respiracion}</li>`;
-    });
-    html += '</ul>';
-
-    res.send(html);
+    res.render('cazadores', {cazadores : cazadores})
 });
 
 app.post('/registrar', (req, res) => {
@@ -38,7 +21,7 @@ app.post('/registrar', (req, res) => {
         respiracion: req.body.respiracion
     };
 
-    if (cazadores.find(c => c.nombre = nuevoCazador.nombre)){
+    if (cazadores.find(c => c.nombre == nuevoCazador.nombre)){
         res.send('Error: Un cazador con ese nombre ya existe!');
     }else{
         cazadores.push(nuevoCazador);
