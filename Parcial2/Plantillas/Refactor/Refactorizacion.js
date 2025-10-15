@@ -15,6 +15,15 @@ app.get('/', (req, res) => {
     res.render('cazadores', {cazadores : cazadores})
 });
 
+app.use((req, res, next) => {
+    const log = `[${new Date().toString()}] ${req.method} ${req.url}\n`;
+
+    fs.appendFile('server.log', log, (error) => {
+        if (error) console.log("Error al escribir en el log.");
+    });
+    next();
+});
+
 app.post('/registrar', (req, res) => {
     const nuevoCazador = {
         nombre: req.body.nombre,
