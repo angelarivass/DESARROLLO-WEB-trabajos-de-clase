@@ -59,10 +59,7 @@ class ServidorVirtual {
     }
 }
 
-
 const servidores = {}; 
-
-
 app.use((req, res, next) => {
     let usuarioID = req.cookies.usuarioID;
     if (!usuarioID) {
@@ -91,12 +88,9 @@ app.post('/servidores', (req, res) => {
 
     res.json({ mensaje: "Servidor creado", servidor: nuevoServidor });
 });
-
-
 app.get('/servidores', (req, res) => {
     res.json(servidores[req.usuarioID]);
 });
-
 
 app.post('/servidores/:id/encender', (req, res) => {
     const servidor = servidores[req.usuarioID].find(s => s.id === req.params.id);
@@ -114,7 +108,6 @@ app.post('/servidores/:id/apagar', (req, res) => {
     res.json({ mensaje: "Servidor apagado", servidor });
 });
 
-
 app.post('/servidores/:id/backup', (req, res) => {
     const servidor = servidores[req.usuarioID].find(s => s.id === req.params.id);
     if (!servidor) return res.status(404).json({ error: "Servidor no encontrado" });
@@ -122,7 +115,6 @@ app.post('/servidores/:id/backup', (req, res) => {
     servidor.respaldar();
     res.json({ mensaje: "Respaldo creado" });
 });
-
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
